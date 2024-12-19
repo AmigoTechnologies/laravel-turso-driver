@@ -17,10 +17,6 @@ class TursoLaravelServiceProvider extends PackageServiceProvider
     public function boot(): void
     {
         parent::boot();
-
-        app()->terminating(function () {
-            Turso::sync();
-        });
     }
 
     public function configurePackage(Package $package): void
