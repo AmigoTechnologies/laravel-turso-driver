@@ -29,10 +29,11 @@ class TestCase extends Orchestra
         config()->set('database.connections.turso', [
             'driver'                  => 'turso',
             'db_url'                  => env('DB_URL', 'http://127.0.0.1:8080'),
-            'db_replica'              => env('DB_REPLICA'),
+            'db_replica'              => storage_path('test-replica.sqlite'),
             'prefix'                  => env('DB_PREFIX', ''),
-            'access_token'            => 'your-access-token',
+            'access_token'            => env('DB_ACCESS_TOKEN', ''),
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
+            'database'               => '',
             'sticky'                  => env('DB_STICKY', true),
         ]);
         config()->set('database.default', 'turso');

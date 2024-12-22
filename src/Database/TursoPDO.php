@@ -28,6 +28,7 @@ class TursoPDO extends PDO
 
     protected array $lastInsertIds = [];
 
+
     public function __construct(
         array $config,
         ?array $options = null
@@ -40,18 +41,19 @@ class TursoPDO extends PDO
 
     public function beginTransaction(): bool
     {
-        $this->inTransaction = $this->prepare('BEGIN')->execute();
+        $this->inTransaction = true;
+        //$this->inTransaction = $this->prepare('BEGIN')->execute();
 
         return $this->inTransaction;
     }
 
     public function commit(): bool
     {
-        $result = $this->prepare('COMMIT')->execute();
+        //$result = $this->prepare('COMMIT')->execute();
 
         $this->inTransaction = false;
 
-        return $result;
+        return true;
     }
 
     public function exec(string $queryStatement): int
@@ -59,7 +61,33 @@ class TursoPDO extends PDO
         $statement = $this->prepare($queryStatement);
         $statement->execute();
 
+        // if ($this->getReadPdo() && $this->isWriteOperation($queryStatement)) {
+        //     defer(function () use ($queryStatement) {
+        //         $this->executeOnReplica($queryStatement);
+        //     });
+        // }
+
         return $statement->rowCount();
+    }
+
+    protected function executeOnReplica(string $query)
+    {
+        try {
+            return $this->getReadPdo()->exec($query);
+        } catch (\Exception $e) {
+        }
+    }
+
+    protected function isWriteOperation(string $query): bool
+    {
+        $pattern = '/^\s*(INSERT|UPDATE|DELETE|ALTER|CREATE|DROP|TRUNCATE)\s/i';
+        return (bool) preg_match($pattern, trim($query));
+    }
+
+
+    protected function getReadPdo(): ?\PDO
+    {
+        return $this->readPdo ?? null;
     }
 
     public function getClient(): TursoClient

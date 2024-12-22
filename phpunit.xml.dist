@@ -15,6 +15,10 @@
     cacheDirectory=".phpunit.cache"
     backupStaticProperties="false"
 >
+    <php>
+        <env name="DB_URL" value="https://central-amigo-men-technologies.turso.io"/>
+        <env name="DB_ACCESS_TOKEN" value="eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MzQ2MzgwODIsImlkIjoiMmRjOTY5MDgtYTUzZC00MWE5LTgyZDItODkyZDg4YzI2ODRlIn0.wMwo-mmEDkfnvBg0lvj09vJr_ZTCEJFQWhjDmjxXQqpcxievVC5v3IQEnDgOyve0M0JhOFgDPlen9m9BRXQwAg"/>
+    </php>
     <testsuites>
         <testsuite name="Turso Laravel Test Suite">
             <directory>tests</directory>
