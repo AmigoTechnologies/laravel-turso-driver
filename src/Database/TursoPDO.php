@@ -41,19 +41,18 @@ class TursoPDO extends PDO
 
     public function beginTransaction(): bool
     {
-        $this->inTransaction = true;
-        //$this->inTransaction = $this->prepare('BEGIN')->execute();
+        $this->inTransaction = $this->prepare('BEGIN')->execute();
 
         return $this->inTransaction;
     }
 
     public function commit(): bool
     {
-        //$result = $this->prepare('COMMIT')->execute();
+        $result = $this->prepare('COMMIT')->execute();
 
         $this->inTransaction = false;
 
-        return true;
+        return $result;
     }
 
     public function exec(string $queryStatement): int
